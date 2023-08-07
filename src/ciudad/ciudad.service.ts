@@ -11,17 +11,6 @@ export class CiudadService {
 
   constructor(@InjectRepository(Ciudad) private readonly ciudadRepository: Repository<Ciudad>) { }
 
-  // public async getAllRaw(): Promise<Ciudad[]> {
-  //   let datos = await this.ciudadRepository.query("SELECT * FROM ciudades");
-
-  //   datos.forEach(element => {
-  //     let ciudad: Ciudad = new Ciudad(element['idCiudad'], element['nombre']);
-  //     this.ciudades.push(ciudad);
-  //   });
-  //   return this.ciudades;
-  // }
-
-
 
   createCiudad(ciudad: createCiudadDTO) {
     const newCiudad = this.ciudadRepository.create(ciudad)

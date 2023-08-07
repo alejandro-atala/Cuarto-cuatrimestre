@@ -9,6 +9,9 @@ export class Ciudad {
     @Column()
     private nombre: string;
 
+    @Column()
+    private codigoPostal: number;
+
     // constructor(id: number, nombre: string) { 
     //     this.idCiudad = id;
     //     this.nombre = nombre;
