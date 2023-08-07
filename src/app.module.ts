@@ -14,9 +14,9 @@ import { CiudadService } from './ciudad/ciudad.service';
     port: 3306,
     username: "root",
     password: "root",
-    database: "escolar",
+    database: "escolar", 
     entities: [
-      "dist/**/**.entity{.ts,.js}"
+      "dist/**/**.entity{.ts,.js}" 
     ],
     synchronize: true
   }),
