@@ -9,7 +9,7 @@ export class EscuelaController {
 
   @Post()
   create(@Body() createEscuelaDto: CreateEscuelaDto) {
-    return this.escuelaService.create(createEscuelaDto);
+    return this.escuelaService.createEscuela(createEscuelaDto);
   }
 
   @Get()

@@ -9,7 +9,7 @@ export class EstudianteController {
 
   @Post()
   create(@Body() createEstudianteDto: CreateEstudianteDto) {
-    return this.estudianteService.create(createEstudianteDto);
+    return this.estudianteService.createEstudiante(createEstudianteDto);
   }
 
   @Get()

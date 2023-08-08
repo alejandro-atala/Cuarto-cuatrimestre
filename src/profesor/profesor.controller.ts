@@ -9,7 +9,7 @@ export class ProfesorController {
 
   @Post()
   create(@Body() createProfesorDto: CreateProfesorDto) {
-    return this.profesorService.create(createProfesorDto);
+    return this.profesorService.createProfesor(createProfesorDto);
   }
 
   @Get()

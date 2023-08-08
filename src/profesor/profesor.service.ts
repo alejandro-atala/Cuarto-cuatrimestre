@@ -8,6 +8,7 @@ import { Profesor } from './entities/profesor.entity';
 
 @Injectable()
 export class ProfesorService {
+  
   private profesores: Profesor[] = [];
 
   constructor(@InjectRepository(Profesor) private readonly profesorRepository: Repository<Profesor>) { }
