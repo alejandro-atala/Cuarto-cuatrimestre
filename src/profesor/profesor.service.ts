@@ -4,9 +4,11 @@ import {CreateProfesorDto} from './dto/create-profesor.dto'
 import { UpdateProfesorDto } from './dto/update-profesor.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Profesor } from './entities/profesor.entity';
+
+
 @Injectable()
 export class ProfesorService {
-  private ciudades: Profesor[] = [];
+  private profesores: Profesor[] = [];
 
   constructor(@InjectRepository(Profesor) private readonly profesorRepository: Repository<Profesor>) { }
 

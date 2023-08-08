@@ -5,9 +5,10 @@ import { Repository } from 'typeorm';
 import { Estudiante } from './entities/estudiante.entity';
 import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
 
+
 @Injectable()
 export class EstudianteService {
-  private ciudades: Estudiante[] = [];
+  private estudiantes: Estudiante[] = [];
 
   constructor(@InjectRepository(Estudiante) private readonly estudianteRepository: Repository<Estudiante>) { }
 

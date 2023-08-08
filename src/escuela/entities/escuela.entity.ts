@@ -1,10 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Ciudad } from "src/ciudad/entities/ciudad.entity";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('escuelas')
 export class Escuela {
 
     @PrimaryGeneratedColumn()
-    private id: number; 
+    private id: number;
 
     @Column()
     private nombre: string;
@@ -12,6 +13,8 @@ export class Escuela {
     @Column()
     private direccion: string;
 
-    @Column()
-    private ciudad: number;
+
+    @ManyToOne(type => Ciudad, ciudad => ciudad.escuelas)
+    @JoinColumn()
+    public ciudad: Ciudad
 }
