@@ -5,16 +5,16 @@ import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColu
 export class Escuela {
 
     @PrimaryGeneratedColumn()
-    private id: number;
+    public id: number;
 
     @Column()
-    private nombre: string;
+    public nombre: string;
 
     @Column()
-    private direccion: string;
+    public direccion: string;
 
 
-    @ManyToOne(type => Ciudad, ciudad => ciudad.escuelas)
+    @ManyToOne(type => Ciudad, ciudad => ciudad.escuela)
     @JoinColumn()
-    public ciudad: Ciudad
+    public ciudad: Ciudad;
 }
