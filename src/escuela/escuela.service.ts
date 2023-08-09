@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateEscuelaDto } from './dto/create-escuela.dto';
 import { UpdateEscuelaDto } from './dto/update-escuela.dto';
 import { Repository } from 'typeorm';
@@ -14,7 +14,16 @@ export class EscuelaService {
   constructor(@InjectRepository(Escuela) private readonly escuelaRepository: Repository<Escuela>) { }
 
 
-  createEscuela(escuela: CreateEscuelaDto) {
+  async createEscuela(escuela: CreateEscuelaDto) {
+    const ciudadFound = await this.escuelaRepository.findOne({
+      where: {
+        nombre: escuela.nombre
+      }
+    })
+
+    if (ciudadFound) {
+      return new HttpException('La escuela ya existe', HttpStatus.CONFLICT)
+    }
     const newEscuela = this.escuelaRepository.create(escuela)
     return this.escuelaRepository.save(newEscuela);
   }
@@ -24,17 +33,33 @@ export class EscuelaService {
 
   }
 
-  findOne(id: number) {
-    return this.escuelaRepository.findOne({ where: { id } });
+  async findOne(id: number) {
+    const escuelaFound = await this.escuelaRepository.findOne({ where: { id } });
+
+    if (!escuelaFound) {
+      return new HttpException('Escuela no encontrada', HttpStatus.NOT_FOUND);
+    }
+    return escuelaFound;
   }
+  
 
-  update(id: number, updateEscuela: UpdateEscuelaDto) {
-    return this.escuelaRepository.update({ id }, updateEscuela)
+  async update(id: number, update: UpdateEscuelaDto) {
+    const escuelaFound = await this.escuelaRepository.findOne({ where: { id } });
 
+    if(!escuelaFound){
+      return new HttpException('Escuela no encontrada', HttpStatus.NOT_FOUND);
+    }
+    const updateEscuela = Object.assign(escuelaFound, update);
+    return this.escuelaRepository.save(updateEscuela)
   };
 
 
-  remove(id: number) {
-    return this.escuelaRepository.delete({ id });
+  async remove(id: number) {
+    const escuelaFound = await this.escuelaRepository.findOne({ where: { id } });
+ 
+    if(!escuelaFound){
+      return new HttpException('Escuela no encontrada', HttpStatus.NOT_FOUND);
+    }
+    return this.escuelaRepository.delete({id});
   }
 }

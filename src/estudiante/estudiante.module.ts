@@ -16,9 +16,9 @@ import { EstudianteService } from './estudiante.service';
 import { EstudianteController } from './estudiante.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Estudiante])], // Importa el repositorio para que esté disponible en el contexto
-  providers: [EstudianteService], // Registra el servicio como proveedor
-  controllers: [EstudianteController], // Registra el controlador si lo tienes
-  exports: [EstudianteService], // Si deseas exportar el servicio para otros módulos
+  imports: [TypeOrmModule.forFeature([Estudiante])], 
+  providers: [EstudianteService], 
+  controllers: [EstudianteController], 
+  exports: [EstudianteService],
 })
 export class EstudianteModule {}

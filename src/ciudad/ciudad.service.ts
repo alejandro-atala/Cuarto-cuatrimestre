@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { createCiudadDTO } from './dto/create-ciudad.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,7 +12,18 @@ export class CiudadService {
   constructor(@InjectRepository(Ciudad) private readonly ciudadRepository: Repository<Ciudad>) { }
 
 
-  createCiudad(ciudad: createCiudadDTO) {
+  async createCiudad(ciudad: createCiudadDTO) {
+
+    const ciudadFound = await this.ciudadRepository.findOne({
+      where: {
+        nombre: ciudad.nombre
+      }
+    })
+
+    if (ciudadFound) {
+      return new HttpException('La ciudad ya existe', HttpStatus.CONFLICT)
+    }
+
     const newCiudad = this.ciudadRepository.create(ciudad)
     return this.ciudadRepository.save(newCiudad);
   }
@@ -22,17 +33,33 @@ export class CiudadService {
 
   }
 
-  findOne(id: number) {
-    return this.ciudadRepository.findOne({ where: { id } });
+  async findOne(id: number) {
+    const ciudadFound = await this.ciudadRepository.findOne({ where: { id } });
+
+    if (!ciudadFound) {
+      return new HttpException('Ciudad no encontrada', HttpStatus.NOT_FOUND);
+    }
+    return ciudadFound;
   }
 
-  update(id: number, updateCiudad: updateCiudadDTO) {
-    return this.ciudadRepository.update({ id }, updateCiudad)
 
+ async update(id: number, update: updateCiudadDTO) {
+    const ciudadFound = await this.ciudadRepository.findOne({ where: { id } });
+
+    if(!ciudadFound){
+      return new HttpException('Ciudad no encontrada', HttpStatus.NOT_FOUND);
+    }
+    const updateCiudad = Object.assign(ciudadFound, update);
+    return this.ciudadRepository.save(updateCiudad)
   };
 
 
-  remove(id: number) {
-    return this.ciudadRepository.delete({ id });
+  async remove(id: number) {
+    const ciudadFound = await this.ciudadRepository.findOne({ where: { id } });
+ 
+    if(!ciudadFound){
+      return new HttpException('Ciudad no encontrada', HttpStatus.NOT_FOUND);
+    }
+    return this.ciudadRepository.delete({id});
   }
 }

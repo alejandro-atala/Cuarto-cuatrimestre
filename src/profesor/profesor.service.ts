@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import {CreateProfesorDto} from './dto/create-profesor.dto'
 import { UpdateProfesorDto } from './dto/update-profesor.dto';
@@ -14,28 +14,57 @@ export class ProfesorService {
   constructor(@InjectRepository(Profesor) private readonly profesorRepository: Repository<Profesor>) { }
 
 
-  createProfesor(profesor: CreateProfesorDto) {
+  async createProfesor(profesor: CreateProfesorDto) {
+    const ciudadFound = await this.profesorRepository.findOne({
+      where: {
+        nombre: profesor.nombre
+      }
+    })
+
+    if (ciudadFound) {
+      return new HttpException('El profesor ya existe', HttpStatus.CONFLICT)
+    }
     const newProfesor = this.profesorRepository.create(profesor)
     return this.profesorRepository.save(newProfesor);
   }
+
+
 
   findAll() {
     return this.profesorRepository.find();
 
   }
 
-  findOne(id: number) {
-    return this.profesorRepository.findOne({ where: { id } });
+  async findOne(id: number) {
+    const profesorFound = await this.profesorRepository.findOne({ where: { id } });
+
+    if (!profesorFound) {
+      return new HttpException('Profesor no encontrado', HttpStatus.NOT_FOUND);
+    }
+    return profesorFound;
   }
+  
 
-  update(id: number, updateCiudad: UpdateProfesorDto) {
-    return this.profesorRepository.update({ id }, updateCiudad)
 
+  async update(id: number, update: UpdateProfesorDto) {
+    const profesorFound = await this.profesorRepository.findOne({ where: { id } });
+
+    if(!profesorFound){
+      return new HttpException('Profesor no encontrada', HttpStatus.NOT_FOUND);
+    }
+    const updateCiudad = Object.assign(profesorFound, update);
+    return this.profesorRepository.save(updateCiudad)
   };
+  
 
 
-  remove(id: number) {
-    return this.profesorRepository.delete({ id });
+  async remove(id: number) {
+    const profesorFound = await this.profesorRepository.findOne({ where: { id } });
+ 
+    if(!profesorFound){
+      return new HttpException('Profesor no encontrado', HttpStatus.NOT_FOUND);
+    }
+    return this.profesorRepository.delete({id});
   }
 }
 

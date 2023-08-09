@@ -6,6 +6,7 @@ import { CiudadModule } from './ciudad/ciudad.module';
 import { EscuelaModule } from './escuela/escuela.module';
 import { EstudianteModule } from './estudiante/estudiante.module';
 import { ProfesorModule } from './profesor/profesor.module';
+import { ClasesModule } from './clases/clases.module';
 
 
 @Module({
@@ -25,7 +26,8 @@ import { ProfesorModule } from './profesor/profesor.module';
     CiudadModule,
     EscuelaModule,
     EstudianteModule,
-    ProfesorModule
+    ProfesorModule,
+    ClasesModule
   ],
 
   controllers: [AppController],
