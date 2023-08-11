@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Ciudad } from './entities/ciudad.entity';
 import { Escuela } from 'src/escuela/entities/escuela.entity';
 
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -12,6 +13,7 @@ import { Escuela } from 'src/escuela/entities/escuela.entity';
     ])
   ],
   controllers: [CiudadController],
-  providers: [CiudadService]
+  providers: [CiudadService],
+  exports : [CiudadService],
 })
 export class CiudadModule { }

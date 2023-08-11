@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateEscuelaDto } from './dto/create-escuela.dto';
 import { UpdateEscuelaDto } from './dto/update-escuela.dto';
-import { Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Escuela } from './entities/escuela.entity';
+
 
 
 @Injectable()
@@ -28,14 +29,17 @@ export class EscuelaService {
     return this.escuelaRepository.save(newEscuela);
   }
 
-  findAll() {
-    return this.escuelaRepository.find();
+  async findAll() : Promise<Escuela[]>{
+    let criterio : FindManyOptions = {relations: ['ciudad']}
+    let escuelas :Escuela[] = await this.escuelaRepository.find(criterio);
+    return escuelas;
 
   }
 
   async findOne(id: number) {
-    const escuelaFound = await this.escuelaRepository.findOne({ where: { id } });
-
+    let criterio :FindOneOptions = {relations: ['ciudad'], where: {id}};
+    let escuelaFound :Escuela = await this.escuelaRepository.findOne(criterio); 
+ 
     if (!escuelaFound) {
       return new HttpException('Escuela no encontrada', HttpStatus.NOT_FOUND);
     }

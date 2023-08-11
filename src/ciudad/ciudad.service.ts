@@ -1,9 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { createCiudadDTO } from './dto/create-ciudad.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { Ciudad } from './entities/ciudad.entity';
 import { updateCiudadDTO } from './dto/update-ciudad.dto';
+import { EscuelaService } from 'src/escuela/escuela.service';
+import { Escuela } from 'src/escuela/entities/escuela.entity';
 
 @Injectable()
 export class CiudadService {
@@ -28,18 +30,23 @@ export class CiudadService {
     return this.ciudadRepository.save(newCiudad);
   }
 
-  findAll() {
-    return this.ciudadRepository.find();
+  async findAll() {
+      let criterio : FindManyOptions = { relations: [ 'escuelas' ] }
+ let ciudad : Ciudad[]= await this.ciudadRepository.find( criterio );
+ return ciudad ;
 
-  }
+    }
+
+  
 
   async findOne(id: number) {
-    const ciudadFound = await this.ciudadRepository.findOne({ where: { id } });
+    const criterio :FindOneOptions = {relations :['escuelas'], where :  { id }  }
+    let ciudad :Ciudad = await this.ciudadRepository.findOne(criterio); 
 
-    if (!ciudadFound) {
+    if (!ciudad) {
       return new HttpException('Ciudad no encontrada', HttpStatus.NOT_FOUND);
     }
-    return ciudadFound;
+    return ciudad;
   }
 
 

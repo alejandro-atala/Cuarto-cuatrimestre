@@ -7,6 +7,8 @@ import { EscuelaModule } from './escuela/escuela.module';
 import { EstudianteModule } from './estudiante/estudiante.module';
 import { ProfesorModule } from './profesor/profesor.module';
 import { ClasesModule } from './clases/clases.module';
+import { MateriasModule } from './materias/materias.module';
+import { AsistenciaModule } from './asistencia/asistencia.module';
 
 
 @Module({
@@ -27,7 +29,9 @@ import { ClasesModule } from './clases/clases.module';
     EscuelaModule,
     EstudianteModule,
     ProfesorModule,
-    ClasesModule
+    ClasesModule,
+    MateriasModule,
+    AsistenciaModule
   ],
 
   controllers: [AppController],

@@ -1,5 +1,5 @@
 import { Ciudad } from "src/ciudad/entities/ciudad.entity";
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('escuelas')
 export class Escuela {
@@ -13,8 +13,12 @@ export class Escuela {
     @Column()
     public direccion: string;
 
+    @Column()
+    public ciudadId: number;
 
-    @ManyToOne(type => Ciudad, ciudad => ciudad.escuela)
-    @JoinColumn()
-    public ciudad: Ciudad;
+
+    @ManyToOne(() => Ciudad, ciudad => ciudad.escuelas)
+   // @JoinColumn()
+    public ciudad: Ciudad; 
 }
+

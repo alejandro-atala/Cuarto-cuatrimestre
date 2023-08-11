@@ -7,17 +7,19 @@ export class Ciudad {
     @PrimaryGeneratedColumn()
     public id: number; 
 
-    @Column({unique : true})
+    @Column()
     public nombre: string;
 
     @Column()
     public codigoPostal: number;
   
+    // @Column() 
+    // public idCiudad: number; 
     
 
-    @OneToMany(type => Escuela, escuela =>escuela.ciudad)
-    @JoinColumn()
-    public escuela : Escuela[];
+    @OneToMany(() => Escuela, escuela =>escuela.ciudad)
+    //@JoinColumn()
+    public escuelas : Escuela[];
     
 }
 
